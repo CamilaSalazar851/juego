@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>INFINITE CASINO — IT English</title>
+<style>
+:root{--gold:#f5c542;--em:#1fd18b;--red:#ff4d6d;--line:#2b3a7a}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;font-family:system-ui,"Segoe UI",Arial,sans-serif;color:#eef2ff;min-height:100vh;background:radial-gradient(circle at 50% -10%,#1b2a6b,#070b1f 65%) fixed}
+h1,h2,h3{font-family:Georgia,serif;color:var(--gold);text-shadow:0 0 18px #f5c54277;margin:.4em 0}
+h1{font-size:clamp(1.8rem,7vw,3.2rem);text-align:center}
+button,select,input{font:inherit}
+button{cursor:pointer;border:0;border-radius:12px;padding:12px 18px;font-weight:700;color:#1a1200;background:linear-gradient(#ffe08a,#e0a82e);box-shadow:0 0 14px #f5c54255;transition:.15s}
+button:hover:not(:disabled){transform:translateY(-2px);filter:brightness(1.1)}
+button:disabled{opacity:.4;cursor:not-allowed}
+button.alt{background:#1c2a63;color:#eef;box-shadow:none;border:1px solid var(--line)}
+button.big{font-size:1.2rem;padding:16px 28px;background:linear-gradient(#5cf0b0,#12a56b);color:#03150d;box-shadow:0 0 22px #1fd18b88}
+button.danger{background:#5a1630;color:#ffe}
+input,select{background:#0b1230;color:#eef;border:1px solid var(--line);border-radius:10px;padding:11px;max-width:100%}
+header{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;padding:10px 14px;background:#0a1030ee;border-bottom:1px solid var(--gold);position:sticky;top:0;z-index:5}
+.coins{font-size:1.2rem;color:var(--gold);font-weight:800;padding:6px 12px;border:1px solid var(--gold);border-radius:20px;transition:.3s}
+.coins.up{color:var(--em);transform:scale(1.15)}.coins.dn{color:var(--red);transform:scale(.92)}
+main{max-width:980px;margin:auto;padding:14px}
+.scr{display:none}.scr.on{display:block;animation:in .5s}
+@keyframes in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.card{background:linear-gradient(160deg,#16225a,#0c1334);border:1px solid var(--line);border-radius:16px;padding:16px;margin:12px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.gc{text-align:center;padding:24px 10px;font-size:1.1rem;color:#fff;background:linear-gradient(160deg,#1a2a73,#0b1236);border:1px solid var(--gold)}
+.gc span{display:block;font-size:3rem}
+.chips{text-align:center}.chips button{border-radius:50%;width:56px;height:56px;padding:0;margin:3px;background:radial-gradient(#fff 12%,#d33 14%,#a11);color:#fff;border:3px dashed #fff}
+.chips button.sel{outline:3px solid var(--em)}
+.msg{min-height:1.6em;font-weight:700;text-align:center;margin:10px 0}
+.row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center}
+#plist{list-style:none;padding:0}#plist li{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;margin:5px 0;background:#0b1230;border-radius:10px}
+#wheelbox{position:relative;width:280px;margin:18px auto}
+#pointer{position:absolute;top:-16px;left:50%;margin-left:-14px;font-size:2rem;color:var(--gold);z-index:2}
+#wheel{position:relative;width:280px;height:280px;border-radius:50%;border:6px solid var(--gold);box-shadow:0 0 30px #f5c54277;transition:transform 4s cubic-bezier(.15,.7,.1,1)}
+.wl{position:absolute;left:50%;top:50%;width:34px;margin:-10px 0 0 -17px;text-align:center;font-weight:900;text-shadow:0 0 4px #000}
+.reel{display:inline-block;width:84px;height:92px;font-size:3.2rem;line-height:92px;text-align:center;background:#fff;border-radius:10px;margin:4px;color:#000;border:3px solid var(--gold)}
+.pc{display:inline-block;width:52px;height:74px;background:#fff;color:#111;border-radius:8px;margin:3px;font-weight:800;line-height:74px;text-align:center}.pc.rd{color:#c11}
+.die{font-size:5rem;display:inline-block;margin:0 8px}.die.go{animation:sh .15s infinite}
+@keyframes sh{50%{transform:rotate(18deg) scale(1.1)}}
+.fc{width:92px;height:128px;font-size:2.6rem;margin:5px;padding:0;background:linear-gradient(135deg,#1d2f8c,#0a1240);color:var(--gold);border:2px solid var(--gold)}
+.fc.flip{animation:fl .6s;background:#fff8dc;color:#222;font-size:.85rem;padding:4px}.fc.dim{opacity:.5}
+@keyframes fl{from{transform:rotateY(90deg)}to{transform:none}}
+.bar{height:12px;background:#0b1230;border-radius:8px;overflow:hidden;margin:4px 0 10px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--em),var(--gold))}
+table{width:100%;border-collapse:collapse}td,th{padding:6px;border-bottom:1px solid var(--line);text-align:left}
+#modal{position:fixed;inset:0;background:#000d;display:none;align-items:flex-start;justify-content:center;z-index:50;padding:12px;overflow:auto}#modal.on{display:flex}
+#mbox{max-width:580px;width:100%;margin:auto;background:linear-gradient(160deg,#1b2a73,#0a1038);border:2px solid var(--gold);border-radius:18px;padding:18px;box-shadow:0 0 40px #f5c54288;animation:in .4s}
+.opt{display:block;width:100%;text-align:left;margin:7px 0;background:#1c2a63;color:#fff;border:1px solid var(--line);box-shadow:none}
+.opt.ok{background:#0f7a4d}.opt.bad{background:#8a1d3d}
+#draw{position:fixed;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;background:#050818f2;z-index:70;text-align:center;padding:16px}#draw.on{display:flex;animation:in .3s}#draw small{font-size:1.1rem;color:var(--em)}#drawName{font-family:Georgia,serif;font-size:clamp(2rem,10vw,4.5rem);font-weight:900;color:var(--gold);text-shadow:0 0 24px #f5c542aa;margin-top:14px;word-break:break-word}#drawName.fin{color:var(--em);animation:pop2 .5s}@keyframes pop2{from{transform:scale(.7)}to{transform:scale(1)}}
+#fx{position:fixed;inset:0;display:none;align-items:center;justify-content:center;font-size:clamp(2rem,9vw,4rem);font-weight:900;pointer-events:none;z-index:40;text-align:center}
+#fx.on{display:flex;animation:pop 1.1s}#fx.win{color:var(--em);background:#1fd18b22}#fx.lose{color:var(--red);background:#ff4d6d22}#fx.push{color:var(--gold)}
+@keyframes pop{0%{opacity:0;transform:scale(.4)}25%{opacity:1;transform:scale(1.1)}100%{opacity:0;transform:scale(1)}}
+#toast{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:#000c;border:1px solid var(--gold);padding:10px 16px;border-radius:12px;z-index:60;display:none;max-width:90vw;text-align:center}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body>
+<header id="top" hidden>
+ <b style="color:var(--gold)">♠ INFINITE CASINO</b>
+ <select id="sel" aria-label="Jugador activo"></select>
+ <span class="coins">🪙 <b id="coins">0</b></span>
+ <span class="row"><button class="alt" data-go="menu">Menú</button><button class="alt" data-go="stats">MI PROGRESO</button><button class="alt" id="bSnd">🔊</button><button id="bRech" hidden>Recarga gratis</button></span>
+</header>
+<main>
+<!-- REGISTRO -->
+<section class="scr" id="welcome">
+ <h1>INFINITE CASINO — IT ENGLISH</h1>
+ <p style="text-align:center;font-size:1.2rem;color:var(--em)">Play with luck. Learn with every loss.</p>
+ <div class="card"><h3>Jugadores</h3>
+  <div class="row"><input id="name" maxlength="20" placeholder="Nombre del jugador"><button id="add">+ Agregar</button></div>
+  <ul id="plist"></ul>
+  <label>Turno (se sortea al entrar al casino): <select id="sel0"></select></label>
+ </div>
+ <div class="card"><h3>Reglas</h3><p>Cada jugador empieza con 500 monedas virtuales (no hay dinero real). Elige una apuesta y juega. <b>Cada vez que pierdes una ronda debes responder una pregunta de inglés</b> sobre infinitives (infinitivos negativos con not to, would like, asked, told; infinitivo con y sin to; infinitivo vs gerundio) antes de continuar, y tienes 20 segundos para contestar (si se acaba el tiempo cuenta como fallo). Ganar o perder la partida es distinto de acertar o fallar la pregunta.</p></div>
+ <div class="row"><button class="big" id="enter">ENTRAR AL CASINO</button><button class="danger" id="resetAll">Comenzar de nuevo</button></div>
+</section>
+<!-- MENÚ -->
+<section class="scr" id="menu">
+ <h2>Elige tu juego</h2>
+ <div class="grid">
+  <button class="gc" data-go="g0"><span>🎡</span>Ruleta de la Fortuna</button>
+  <button class="gc" data-go="g1"><span>🎰</span>Máquinas Tragamonedas</button>
+  <button class="gc" data-go="g2"><span>🃏</span>Blackjack 21</button>
+  <button class="gc" data-go="g3"><span>🎲</span>Dados de la Suerte</button>
+  <button class="gc" data-go="g4"><span>🂠</span>Cartas de la Fortuna</button>
+ </div>
+ <div class="card"><h3>Reglas y objetivo</h3><p>Apuesta monedas virtuales. Si pierdes, responde la pregunta obligatoria. Empates y devoluciones no generan pregunta. Si te quedas sin monedas, usa la recarga gratuita. Objetivo académico: dominar los infinitives (con to, sin to, negativos y frente al gerundio) en contextos de informática y ciberseguridad.</p></div>
+</section>
+<!-- JUEGO 0: RULETA -->
+<section class="scr" id="g0"><h2>🎡 Ruleta de la Fortuna</h2>
+ <div class="bets"></div>
+ <div id="wheelbox"><div id="pointer">▼</div><div id="wheel"></div></div>
+ <div class="row"><button class="big" id="spin">GIRAR RULETA</button><button class="alt" data-go="menu">Volver al menú</button></div>
+ <div class="msg" id="m0"></div><div class="card">Historial: <span id="rh">—</span></div>
+</section>
+<!-- JUEGO 1: TRAGAMONEDAS -->
+<section class="scr" id="g1"><h2>🎰 Máquinas Tragamonedas</h2>
+ <div class="bets"></div>
+ <div class="card" style="text-align:center"><span class="reel" id="r0">🍒</span><span class="reel" id="r1">💎</span><span class="reel" id="r2">💻</span>
+ <p>Tres iguales: ×6 (⭐🔔🪙🍒), ×10 (💎), ×15 (💻). Dos iguales: recuperas la apuesta.</p></div>
+ <div class="row"><button class="big" id="pull">GIRAR</button><button class="alt" data-go="menu">Volver al menú</button></div>
+ <div class="msg" id="m1"></div>
+</section>
+<!-- JUEGO 2: BLACKJACK -->
+<section class="scr" id="g2"><h2>🃏 Blackjack 21</h2>
+ <div class="bets"></div>
+ <div class="card"><b>Crupier: <span id="dv"></span></b><div id="dh"></div><b>Tú: <span id="pv"></span></b><div id="ph"></div></div>
+ <div class="row"><button id="deal">REPARTIR</button><button id="hit" disabled>PEDIR CARTA</button><button id="stand" disabled>PLANTARSE</button><button class="alt" data-go="menu">Volver al menú</button></div>
+ <div class="msg" id="m2">Blackjack paga 3:2. El crupier pide hasta 17.</div>
+</section>
+<!-- JUEGO 3: DADOS -->
+<section class="scr" id="g3"><h2>🎲 Dados de la Suerte</h2>
+ <div class="bets"></div>
+ <div class="card" style="text-align:center"><span class="die" id="d0">⚀</span><span class="die" id="d1">⚁</span><div class="row" id="preds"></div></div>
+ <div class="row"><button class="big" id="roll">LANZAR DADOS</button><button class="alt" data-go="menu">Volver al menú</button></div>
+ <div class="msg" id="m3"></div>
+</section>
+<!-- JUEGO 4: CARTAS -->
+<section class="scr" id="g4"><h2>🂠 Cartas de la Fortuna</h2>
+ <div class="bets"></div>
+ <p style="text-align:center">Pulsa BARAJAR y elige una carta: premio, multiplicador, especial, sorpresa… o pérdida.</p>
+ <div class="row" id="fcs"></div>
+ <div class="row"><button class="big" id="shuffle">BARAJAR</button><button class="alt" data-go="menu">Volver al menú</button></div>
+ <div class="msg" id="m4"></div>
+</section>
+<!-- ESTADÍSTICAS -->
+<section class="scr" id="stats"><h2>MI PROGRESO</h2><div id="statsBox"></div>
+ <div class="row"><button class="alt" data-go="menu">Volver al menú</button><button class="danger" id="resetMe">Reiniciar mis estadísticas</button></div>
+</section>
+</main>
+<div id="draw"><small id="drawTxt">Sorteando jugador…</small><div id="drawName"></div></div><div id="modal"><div id="mbox"></div></div><div id="fx"></div><div id="toast"></div>
+<script>
+(function(){'use strict';
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const rnd=n=>Math.floor(Math.random()*n),sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=rnd(i+1);[a[i],a[j]]=[a[j],a[i]]}return a};
+const GN=['Ruleta de la Fortuna','Máquinas Tragamonedas','Blackjack 21','Dados de la Suerte','Cartas de la Fortuna'];
+
+/* ===== Estado y persistencia (localStorage opcional) ===== */
+let S={players:[],cur:0,snd:true,pending:null};
+try{const d=JSON.parse(localStorage.getItem('icasino_v1'));if(d&&d.players)S=d}catch(e){}
+const save=()=>{try{localStorage.setItem('icasino_v1',JSON.stringify(S))}catch(e){}};
+const P=()=>S.players[S.cur];
+const newP=n=>({name:n,coins:500,games:0,wins:0,losses:0,qa:0,qc:0,streak:0,best:0,asked:[],qh:[],hist:[],err:{}});
+let bet=25,busy=false,modalOpen=false,CQ=null;
+async function sorteo(fast,excl){const N=S.players.length;if(N<2){if(N===1){S.cur=0;save()}return}
+ busy=true;const box=$('#draw'),nm=$('#drawName');nm.classList.remove('fin');$('#drawTxt').textContent='Sorteando jugador…';box.classList.add('on');
+ let t;do{t=rnd(N)}while(excl&&t===S.cur);
+ const steps=fast?5:8,st=(((t-(steps-1))%N)+N)%N;
+ for(let i=0;i<steps;i++){nm.textContent=S.players[(st+i)%N].name;beep(380+(i%N)*70,.05);await sleep(35+i*i*(fast?4:5))}
+ S.cur=t;save();refresh();nm.classList.add('fin');$('#drawTxt').textContent=fast?'Le toca a:':'¡Empieza a jugar!';beep(784,.2);await sleep(fast?400:500);box.classList.remove('on');busy=false}
+
+/* ===== Sonido ===== */
+let AC;function beep(f,d=.15,t='sine'){if(!S.snd)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain();o.type=t;o.frequency.value=f;g.gain.value=.07;o.connect(g);g.connect(AC.destination);o.start();o.stop(AC.currentTime+d)}catch(e){}}
+const jingle=ok=>(ok?[523,659,784]:[300,220]).forEach((f,i)=>setTimeout(()=>beep(f,.18,ok?'sine':'sawtooth'),i*140));
+
+/* ===== Utilidades de interfaz ===== */
+let tt;function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(tt);tt=setTimeout(()=>t.style.display='none',2600)}
+function show(id){$$('.scr').forEach(s=>s.classList.toggle('on',s.id===id));$('#top').hidden=(id==='welcome');renderBets();refresh();window.scrollTo(0,0)}
+function go(id){if(busy||modalOpen){toast('Termina primero la ronda y la pregunta.');return}if(id==='stats')stats();show(id)}
+function renderSel(){const h=S.players.map((p,i)=>`<option value="${i}">${esc(p.name)}</option>`).join('');['#sel','#sel0'].forEach(s=>{$(s).innerHTML=h;$(s).value=S.cur})}
+function renderPlayers(){$('#plist').innerHTML=S.players.map((p,i)=>`<li><span>${esc(p.name)} · 🪙 ${p.coins}</span><button class="danger" data-del="${i}">Eliminar</button></li>`).join('')||'<li>Aún no hay jugadores.</li>';renderSel()}
+function renderBets(){const p=P(),c=p?p.coins:0;$$('.bets').forEach(b=>b.innerHTML='<div class="chips">'+[10,25,50,100].map(v=>`<button data-bet="${v}" class="${bet===v?'sel':''}" ${v>c?'disabled':''}>${v}</button>`).join('')+`</div><div class="msg">Apuesta: 🪙 ${bet}</div>`)}
+function refresh(){const p=P();if(!p)return;renderSel();const c=$('#coins'),old=+c.dataset.v||0;c.textContent=p.coins;c.dataset.v=p.coins;
+ const bx=c.parentElement;bx.classList.remove('up','dn');if(p.coins>old)bx.classList.add('up');else if(p.coins<old)bx.classList.add('dn');
+ $('#bRech').hidden=p.coins>=10;
+ if(!busy){const ok=[10,25,50,100].filter(v=>v<=p.coins);if(!ok.includes(bet))bet=ok.length?ok[ok.length-1]:0;renderBets()}}
+
+/* ===== Apuesta y resultado: UN solo punto de cobro y pago ===== */
+function begin(){if(busy||modalOpen)return 0;const p=P();if(!p)return 0;if(bet<=0||bet>p.coins){toast('Saldo insuficiente. Usa la recarga gratuita.');return 0}
+ busy=true;const b=bet;p.coins-=b;save();refresh();return b}
+function finish(g,res,pay,text){const p=P();p.games++;
+ if(res==='win'){p.wins++;p.coins+=pay}else if(res==='push')p.coins+=pay;else p.losses++;
+ p.hist.unshift({g:GN[g],r:res,t:text});p.hist.length=Math.min(p.hist.length,40);
+ const m=$('#m'+g);m.textContent=text;m.style.color=res==='win'?'#1fd18b':res==='lose'?'#ff4d6d':'#f5c542';
+ save();refresh();fx(res);
+ if(res==='lose')setTimeout(()=>ask(GN[g]),1000);else setTimeout(()=>sorteo(true,true).then(()=>{busy=false}),700)}   // TODA derrota pasa por ask()
+function fx(r){const f=$('#fx');f.textContent=r==='win'?'🎉 ¡VICTORIA! 🎉':r==='lose'?'💥 DERROTA 💥':'🤝 EMPATE';f.className='on '+r;jingle(r==='win');setTimeout(()=>f.className='',1100)}
+
+/* ===== Banco de preguntas (PDF: infinitivos negativos con would like, ask, tell) ===== */
+const TOLD=["The security team told us","My manager told me","The CTO told the developers","HR told the staff","The admin told the client","Our lead told the interns","The auditor told everyone"];
+const ASKD=["I asked the team","The admin asked me","They asked us","The lead asked the devs","Support asked the user","The CEO asked everyone","She asked him"];
+const WL=["I","We","They","She","He","The team"];
+// [verbo, gerundio, complemento]: situaciones de seguridad del PDF
+const IT=[["delete","deleting","the audit logs"],["open","opening","dangerous scripts"],["click","clicking","suspicious links"],["modify","modifying","the main branch without approval"],["share","sharing","passwords"],["store","storing","data in plain text"],["use","using","public Wi-Fi"],["install","installing","unauthorized apps"],["push","pushing","code yet"],["restart","restarting","the production server"],["write","writing","passwords on paper"],["connect","connecting","unknown USB drives"],["open","opening","unknown attachments"],["deploy","deploying","on Fridays"],["touch","touching","the production server"],["disable","disabling","the firewall"]];
+const NT=12; // 12 plantillas x 16 situaciones = 192 preguntas base
+function mk(t,i,v){const[b,g,r]=IT[i],A=TOLD[rnd(TOLD.length)],B=ASKD[rnd(ASKD.length)],W=WL[rnd(WL.length)],C=`not to ${b}`;let c,d,q,o,e;
+ if(t===0){c='Ask y tell en negativo';d='fácil';q=`Choose the correct sentence: ${A} ____ ${r}.`;o=[C,`to not ${b}`,`not ${g}`,`no to ${b}`];e=`Con "told" + persona se usa not + to + verbo: "${A} ${C} ${r}". "to not ${b}" es un error común.`}
+ else if(t===1){c='Would like en negativo';d='fácil';q=`${W} would like ____ ${r}.`;o=[C,`to not ${b}`,`no ${b}`,`not ${g}`];e=`Estructura: sujeto + would like + not to + verbo ("${W} would like ${C} ${r}").`}
+ else if(t===2){c='Corrección de errores';d='intermedio';q=`Spot the bug: "${A} to no ${b} ${r}." Choose the correct sentence.`;o=[`${A} ${C} ${r}.`,`${A} don't ${b} ${r}.`,`${A} not ${g} ${r}.`,`${A} no ${b} ${r}.`];e=`El infinitivo negativo es "not to + verbo"; "to no" y "don't" no se usan en reported speech.`}
+ else if(t===3){c='Corrección de errores';d='intermedio';q=`Spot the bug: "${W} would like to not ${b} ${r}." Choose the correct sentence.`;o=[`${W} would like ${C} ${r}.`,`${W} would like no to ${b} ${r}.`,`${W} would like don't ${b} ${r}.`,`${W} would like not ${g} ${r}.`];e=`Se dice "would like not to ${b}", nunca "to not ${b}".`}
+ else if(t===4){c='Instrucciones de seguridad';d='intermedio';q=`Report the order "Don't ${b} ${r}." → ${B} ____ ${r}.`;o=[C,`don't ${b}`,`to not ${b}`,`not ${g}`];e=`Una orden negativa se reporta con asked/told + persona + not to + verbo: "${B} ${C} ${r}".`}
+ else if(t===5){c='Restricciones de seguridad';d='fácil';q=`Rule: do not ${b} ${r}. Which report is correct?`;o=[`The policy asks users not to ${b} ${r}.`,`The policy asks users to not ${b} ${r}.`,`The policy asks users don't to ${b} ${r}.`,`The policy asks users no to ${b} ${r}.`];e=`Para reportar una prohibición: asks + persona + not to + verbo.`}
+ else if(t===6){c='Completar oraciones (would like / asked / told)';d='avanzado';q=`Complete: ${W} ____ not to ${b} ${r}.`;o=['would like','asked','told','is like'];e=`"would like" no necesita persona; "asked" y "told" sí (asked him not to...). Aquí no hay persona, así que va "would like".`}
+ else if(t===7){const V=['decided','wanted','needed','planned','hoped','agreed'],vb=V[rnd(V.length)];c='Infinitivo después de verbos';d='fácil';q=`${W} ${vb} ____ ${r}.`;o=[`to ${b}`,g,b,`for ${b}`];e=`Después de verbos como decide, want, need, plan, hope y agree se usa to + verbo: "${W} ${vb} to ${b} ${r}".`}
+ else if(t===8){const M=['can','must','should','will','could'],md=M[rnd(M.length)];c='Infinitivo sin to (modales)';d='intermedio';q=`${W} ${md} ____ ${r}.`;o=[b,`to ${b}`,g,`${b}s`];e=`Después de un modal (can, must, should, will, could) va el verbo base, sin to: "${W} ${md} ${b} ${r}".`}
+ else if(t===9){const m=['made','let'][rnd(2)];c='Infinitivo sin to (let / make)';d='intermedio';q=`The admin ${m} the team ____ ${r}.`;o=[b,`to ${b}`,g,`for ${b}`];e=`Después de make y let + persona va el verbo base, sin to: "The admin ${m} the team ${b} ${r}".`}
+ else if(t===10){const V=['avoided','finished','suggested','practiced','considered'],vb=V[rnd(V.length)];c='Infinitivo vs gerundio';d='avanzado';q=`${W} ${vb} ____ ${r}.`;o=[g,`to ${b}`,b,`for ${b}`];e=`Verbos como avoid, finish, suggest, practice y consider van seguidos de gerundio (-ing), no de infinitivo: "${W} ${vb} ${g} ${r}".`}
+ else{c='Corrección de errores';d='intermedio';q=`Spot the bug: "${W} wanted ${g} ${r}." Choose the correct sentence.`;o=[`${W} wanted to ${b} ${r}.`,`${W} wanted ${b} ${r}.`,`${W} wanted for ${b} ${r}.`,`${W} wanted that ${b} ${r}.`];e=`Después de want se usa to + verbo, no gerundio: "${W} wanted to ${b} ${r}".`}
+ const ix=shuf([0,1,2,3]);return{id:`${t}-${i}-${v}`,c,d,q,o:ix.map(j=>o[j]),a:ix.indexOf(0),e}}
+// Elige una pregunta que el jugador no haya visto; si se agota el banco, genera variantes con otros sujetos
+function pickQ(p){let v=0,pool;for(;;v++){pool=[];for(let t=0;t<NT;t++)for(let i=0;i<IT.length;i++)if(!p.asked.includes(`${t}-${i}-${v}`))pool.push([t,i]);if(pool.length)break}
+ const[t,i]=pool[rnd(pool.length)];return mk(t,i,v)}
+
+/* ===== Modal obligatorio tras cada derrota ===== */
+let QT=null;const TL=20;
+function startT(){let left=TL*10;clearInterval(QT);QT=setInterval(()=>{left--;const b=$('#tbar'),n=$('#tnum');if(b){b.style.width=(left/(TL*10)*100)+'%';if(left<=50)b.style.background='var(--red)'}if(n)n.textContent='⏱ '+Math.ceil(left/10)+' s';if(left<=0){clearInterval(QT);answer(-1)}},100)}
+function ask(gname){const p=P();busy=true;modalOpen=true;S.pending=gname;save();CQ=pickQ(p);$('#modal').classList.add('on');
+ const pc=p.qa?Math.round(p.qc*100/p.qa):0;
+ $('#mbox').innerHTML=`<h2>💥 Has perdido</h2><p><b>${esc(p.name)}</b> · ${esc(gname)}</p><p style="color:var(--red)">La derrota ya quedó registrada. Responde para continuar.</p>
+ <p>Pregunta nº ${p.qa+1} · ✔ ${p.qc}/${p.qa} · racha ${p.streak} · <i>${CQ.d}</i></p><div class="bar"><i style="width:${pc}%"></i></div>
+ <p id="tnum" style="text-align:center;font-weight:800;margin:4px 0 2px">⏱ ${TL} s</p><div class="bar"><i id="tbar" style="width:100%"></i></div>
+ <p><small>${esc(CQ.c)}</small></p><h3 style="color:#fff;font-family:inherit">${esc(CQ.q)}</h3>
+ ${CQ.o.map((x,i)=>`<button class="opt" data-o="${i}"><b>${'ABCD'[i]}.</b> ${esc(x)}</button>`).join('')}<div id="exp"></div>`;startT()}
+function answer(i){if(!CQ||CQ.done)return;CQ.done=1;clearInterval(QT);const p=P(),ok=i===CQ.a;p.qa++;p.asked.push(CQ.id);
+ if(ok){p.qc++;p.streak++;p.best=Math.max(p.best,p.streak)}else{p.streak=0;p.err[CQ.c]=(p.err[CQ.c]||0)+1}
+ p.qh.unshift({c:CQ.c,ok,q:CQ.q});p.qh.length=Math.min(p.qh.length,60);S.pending=null;save();
+ $$('.opt').forEach((b,j)=>{b.disabled=true;if(j===CQ.a)b.classList.add('ok');else if(j===i)b.classList.add('bad')});
+ $('#exp').innerHTML=`<p><b>${ok?'✅ ¡Correcto! Excelente.':(i<0?'⏱ Se acabó el tiempo. Respuesta correcta: ':'❌ Incorrecto. Respuesta correcta: ')+'ABCD'[CQ.a]+'.'}</b><br>${esc(CQ.e)}</p><button class="big" id="cont">CONTINUAR</button>`;jingle(ok)}
+function cont(){clearInterval(QT);modalOpen=false;busy=false;CQ=null;$('#modal').classList.remove('on');refresh();sorteo(true,true)}
+$('#mbox').addEventListener('click',e=>{const o=e.target.closest('[data-o]');if(o)answer(+o.dataset.o);if(e.target.id==='cont')cont()});
+
+/* ===== JUEGO 0: Ruleta ===== */
+const RM=[0,2,0,3,0,2,0,0,0,2,0,4];let rot=0,rhA=[];const wheel=$('#wheel');
+wheel.style.background='conic-gradient('+RM.map((m,i)=>`${m?(i%4===1?'#1fa56b':'#c9962a'):(i%2?'#2a0d1c':'#4a1236')} ${i*30}deg ${i*30+30}deg`).join(',')+')';
+wheel.innerHTML=RM.map((m,i)=>`<span class="wl" style="transform:rotate(${i*30+15}deg) translateY(-100px)">${m?'×'+m:'✖'}</span>`).join('');
+$('#spin').onclick=async()=>{const b=begin();if(!b)return;const i=rnd(12),m=RM[i],c=i*30+15+rnd(16)-8;
+ rot+=1800+(((-c-rot)%360)+360)%360;wheel.style.transform=`rotate(${rot}deg)`;$('#m0').textContent='Girando…';$('#m0').style.color='#fff';beep(400,.1);await sleep(4200);
+ rhA.unshift(m?'×'+m:'✖');rhA.length=Math.min(rhA.length,12);$('#rh').textContent=rhA.join('  ');
+ m?finish(0,'win',b*m,`¡Salió ×${m}! +${b*m-b} monedas`):finish(0,'lose',0,`Salió ✖ (−${b} monedas)`)};
+
+/* ===== JUEGO 1: Tragamonedas ===== */
+const SY=['🍒','💎','⭐','🔔','🪙','💻'];
+$('#pull').onclick=async()=>{const b=begin();if(!b)return;const R=[0,1,2].map(i=>$('#r'+i)),res=R.map(()=>rnd(6)),run=[1,1,1];$('#m1').textContent='Girando…';$('#m1').style.color='#fff';
+ const t=setInterval(()=>R.forEach((r,i)=>{if(run[i])r.textContent=SY[rnd(6)]}),80);
+ for(let i=0;i<3;i++){await sleep(700+i*450);run[i]=0;R[i].textContent=SY[res[i]];beep(500+i*120,.1)}
+ clearInterval(t);const[a,c,d]=res;
+ if(a===c&&c===d){const m=a===5?15:a===1?10:6;finish(1,'win',b*m,`¡JACKPOT ${SY[a]}×3! ×${m}`)}
+ else if(a===c||a===d||c===d)finish(1,'push',b,'Pareja: recuperas tu apuesta');
+ else finish(1,'lose',0,`Sin combinación (−${b} monedas)`)};
+
+/* ===== JUEGO 2: Blackjack ===== */
+let bj=null;
+const val=h=>{let t=0,a=0;h.forEach(c=>{if(c.r==='A'){a++;t+=11}else t+=isNaN(+c.r)?10:+c.r});while(t>21&&a>0){t-=10;a--}return t};
+const hand=(h,hide)=>h.map((c,i)=>hide&&i===1?'<span class="pc">🂠</span>':`<span class="pc ${'♥♦'.includes(c.s)?'rd':''}">${c.r}${c.s}</span>`).join('');
+function drawBJ(hide){$('#ph').innerHTML=hand(bj.p);$('#dh').innerHTML=hand(bj.d,hide);$('#pv').textContent=val(bj.p);$('#dv').textContent=hide?'?':val(bj.d)}
+function setBJ(on){$('#hit').disabled=$('#stand').disabled=!on;$('#deal').disabled=on}
+$('#deal').onclick=()=>{const b=begin();if(!b)return;const deck=[];['♠','♥','♦','♣'].forEach(s=>['A','2','3','4','5','6','7','8','9','10','J','Q','K'].forEach(r=>deck.push({r,s})));
+ bj={deck:shuf(deck),p:[],d:[],b};bj.p.push(bj.deck.pop(),bj.deck.pop());bj.d.push(bj.deck.pop(),bj.deck.pop());$('#m2').textContent='';
+ if(val(bj.p)===21||val(bj.d)===21)endBJ();else{drawBJ(true);setBJ(true)}};
+$('#hit').onclick=()=>{bj.p.push(bj.deck.pop());beep(600,.08);const v=val(bj.p);if(v>21)endBJ();else if(v===21)endBJ();else drawBJ(true)};
+$('#stand').onclick=()=>endBJ();
+function endBJ(){const b=bj.b,pv=val(bj.p),nat=bj.p.length===2&&pv===21;
+ if(pv<=21&&!nat)while(val(bj.d)<17)bj.d.push(bj.deck.pop());
+ const dv=val(bj.d),dnat=bj.d.length===2&&dv===21;setBJ(false);drawBJ(false);
+ if(pv>21)finish(2,'lose',0,`Te pasaste con ${pv} (−${b})`);
+ else if(nat&&dnat)finish(2,'push',b,'Doble blackjack: empate');
+ else if(nat)finish(2,'win',Math.floor(b*2.5),'¡BLACKJACK! Pago 3:2');
+ else if(dnat)finish(2,'lose',0,`El crupier tiene blackjack (−${b})`);
+ else if(dv>21||pv>dv)finish(2,'win',b*2,`Ganas ${pv} contra ${dv}`);
+ else if(pv===dv)finish(2,'push',b,`Empate a ${pv}`);
+ else finish(2,'lose',0,`Pierdes ${pv} contra ${dv} (−${b})`)}
+
+/* ===== JUEGO 3: Dados ===== */
+const DF='⚀⚁⚂⚃⚄⚅';let pred=null;
+const PR={gt:['Suma mayor que 7',2,(a,b)=>a+b>7],lt:['Suma menor que 7',2,(a,b)=>a+b<7],eq:['Suma exactamente 7',5,(a,b)=>a+b===7],db:['Dobles',5,(a,b)=>a===b]};
+$('#preds').innerHTML=Object.entries(PR).map(([k,v])=>`<button class="alt" data-p="${k}">${v[0]} (×${v[1]})</button>`).join('');
+$('#preds').onclick=e=>{const b=e.target.closest('[data-p]');if(!b||busy)return;pred=b.dataset.p;$$('#preds button').forEach(x=>x.style.outline=x===b?'3px solid #1fd18b':'')};
+$('#roll').onclick=async()=>{if(busy||modalOpen)return;if(!pred){toast('Elige primero una predicción.');return}const b=begin();if(!b)return;
+ const D=[$('#d0'),$('#d1')];D.forEach(d=>d.classList.add('go'));const t=setInterval(()=>D.forEach(d=>d.textContent=DF[rnd(6)]),70);await sleep(1100);clearInterval(t);D.forEach(d=>d.classList.remove('go'));
+ const x=rnd(6)+1,y=rnd(6)+1;D[0].textContent=DF[x-1];D[1].textContent=DF[y-1];const[n,m,f]=PR[pred];
+ f(x,y)?finish(3,'win',b*m,`${x}+${y}=${x+y}. ¡Acertaste "${n}"! +${b*m-b}`):finish(3,'lose',0,`${x}+${y}=${x+y}. Fallaste "${n}" (−${b})`)};
+
+/* ===== JUEGO 4: Cartas ===== */
+let fc=null;
+$('#fcs').innerHTML=[0,1,2,3,4].map(i=>`<button class="fc" data-c="${i}" disabled>🂠</button>`).join('');
+const mkOut=()=>{const r=rnd(10);return r<5?{l:'💀 Pérdida de monedas'}:r<7?{l:'🪙 Premio ×2',m:2}:r<8?{l:'✨ Multiplicador ×4',m:4}:r<9?{l:'🏅 Premio especial +150',add:150}:{l:'🎁 Carta sorpresa',s:1}};
+$('#shuffle').onclick=()=>{const b=begin();if(!b)return;fc={b,o:[0,1,2,3,4].map(mkOut),done:0};$$('.fc').forEach(c=>{c.className='fc';c.textContent='🂠';c.disabled=false});$('#shuffle').disabled=true;$('#m4').textContent='Elige una carta…';$('#m4').style.color='#fff';beep(450,.1)};
+$('#fcs').onclick=async e=>{const c=e.target.closest('[data-c]');if(!c||!fc||fc.done)return;fc.done=1;const i=+c.dataset.c,o=fc.o[i],b=fc.b;let pay=0;
+ if(o.m)pay=b*o.m;else if(o.add)pay=b+o.add;else if(o.s){if(rnd(2)){o.l='🎁 Sorpresa: ×3';pay=b*3}else o.l='🎁 Sorpresa: ¡pierdes!'}
+ c.className='fc flip';c.textContent=o.l;await sleep(700);
+ $$('.fc').forEach((x,j)=>{if(j!==i){x.className='fc flip dim';x.textContent=fc.o[j].l}x.disabled=true});$('#shuffle').disabled=false;
+ pay?finish(4,'win',pay,`${o.l}: +${pay-b} monedas`):finish(4,'lose',0,`${o.l} (−${b})`)};
+
+/* ===== Estadísticas y clasificación ===== */
+function stats(){const p=P(),pc=(a,b)=>b?Math.round(a*100/b):0,bar=v=>`<div class="bar"><i style="width:${v}%"></i></div>`;
+ const lb=S.players.slice().sort((a,b)=>b.coins-a.coins||b.qc-a.qc),er=Object.entries(p.err).sort((a,b)=>b[1]-a[1]),mx=er.length?er[0][1]:1;
+ $('#statsBox').innerHTML=`<div class="card"><h3>${esc(p.name)} · 🪙 ${p.coins}</h3>
+ <p>Partidas: ${p.games} · Victorias: ${p.wins} · Derrotas: ${p.losses}</p>Victorias ${pc(p.wins,p.games)}%${bar(pc(p.wins,p.games))}
+ <p>Preguntas: ${p.qa} · Correctas: ${p.qc} · Incorrectas: ${p.qa-p.qc} · Racha: ${p.streak} (mejor ${p.best})</p>Aciertos ${pc(p.qc,p.qa)}%${bar(pc(p.qc,p.qa))}</div>
+ <div class="card"><h3>Temas con más errores</h3>${er.map(([k,v])=>`${esc(k)} (${v})${bar(Math.round(v*100/mx))}`).join('')||'Sin errores todavía.'}</div>
+ <div class="card"><h3>Historial de preguntas</h3>${p.qh.slice(0,10).map(h=>`<div>${h.ok?'✅':'❌'} ${esc(h.q)}</div>`).join('')||'Aún no hay preguntas.'}</div>
+ <div class="card"><h3>Historial de partidas</h3>${p.hist.slice(0,8).map(h=>`<div>${h.r==='win'?'🟢':h.r==='lose'?'🔴':'🟡'} ${esc(h.g)}: ${esc(h.t)}</div>`).join('')||'Aún no hay partidas.'}</div>
+ <div class="card"><h3>Clasificación</h3><table><tr><th>#</th><th>Jugador</th><th>🪙</th><th>Acierto</th></tr>${lb.map((x,i)=>`<tr><td>${i+1}</td><td>${esc(x.name)}</td><td>${x.coins}</td><td>${pc(x.qc,x.qa)}%</td></tr>`).join('')}</table></div>`}
+
+/* ===== Eventos generales ===== */
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g)go(g.dataset.go);
+ const b=e.target.closest('[data-bet]');if(b){if(busy||modalOpen)return;bet=+b.dataset.bet;renderBets()}
+ const d=e.target.closest('[data-del]');if(d){const i=+d.dataset.del;if(confirm('¿Eliminar a '+S.players[i].name+'?')){S.players.splice(i,1);S.cur=0;save();renderPlayers()}}});
+function addP(){const n=$('#name').value.trim();if(!n){toast('Escribe un nombre.');return}if(S.players.some(p=>p.name.toLowerCase()===n.toLowerCase())){toast('Ese nombre ya existe.');return}S.players.push(newP(n));S.cur=S.players.length-1;$('#name').value='';save();renderPlayers()}
+$('#add').onclick=addP;$('#name').onkeydown=e=>{if(e.key==='Enter')addP()};
+['#sel','#sel0'].forEach(s=>$(s).onchange=e=>{if(busy||modalOpen){toast('Termina la ronda primero.');renderSel();return}S.cur=+e.target.value;save();refresh();if($('#stats').classList.contains('on'))stats()});
+$('#enter').onclick=async()=>{if(!S.players.length){toast('Agrega al menos un jugador.');return}if(busy||modalOpen)return;await sorteo(false,false);show('menu')};
+$('#bSnd').onclick=()=>{S.snd=!S.snd;$('#bSnd').textContent=S.snd?'🔊':'🔇';save()};
+$('#bRech').onclick=()=>{const p=P();if(busy||modalOpen||p.coins>=10)return;p.coins+=200;save();refresh();toast('+200 monedas virtuales gratis')};
+$('#resetAll').onclick=()=>{if(confirm('¿Borrar TODOS los jugadores y estadísticas?')){S={players:[],cur:0,snd:S.snd,pending:null};save();renderPlayers();show('welcome')}};
+$('#resetMe').onclick=()=>{if(busy||modalOpen)return;if(confirm('¿Reiniciar tus estadísticas y monedas?')){S.players[S.cur]=newP(P().name);save();stats();refresh()}};
+
+/* ===== Inicio ===== */
+$('#bSnd').textContent=S.snd?'🔊':'🔇';renderPlayers();show('welcome');
+if(S.pending&&P()){show('menu');ask(S.pending)}   // si recargan en plena pregunta, se vuelve a exigir
+})();
+</script></body></html>
